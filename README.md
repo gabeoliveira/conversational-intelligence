@@ -59,6 +59,36 @@ twilio serverless:deploy
 
 Take note of your function domain. You are going to use it later.
 
+### 🚀 Deploying via GitHub Actions
+
+If you prefer not to install the Twilio CLI or deploy manually, you can use the included GitHub Actions workflow:
+
+#### 1. Fork or Clone the Repository
+
+Fork this repository or clone it to your own GitHub account.
+
+#### 2. Add GitHub Secrets
+
+Go to **Settings > Secrets and variables > Actions > New repository secret** and add the following secrets:
+
+| Secret Name                | Description                                  |
+| -------------------------- | -------------------------------------------- |
+| `TWILIO_ACCOUNT_SID`       | Your Twilio Account SID                      |
+| `TWILIO_AUTH_TOKEN`        | Your Twilio Auth Token                       |
+| `INTELLIGENCE_SERVICE_SID` | Your Conversational Intelligence Service SID |
+| `CONVERSATION_SERVICE_SID` | Your Conversations Service SID               |
+
+#### 3. Trigger the Workflow
+
+Once the secrets are set up:
+
+1. Navigate to the **Actions** tab on GitHub.
+2. Select **Deploy to Twilio Serverless**.
+3. Click **Run workflow**.
+4. Wait for the workflow to complete — it will deploy your service to Twilio and print the Function URL in the logs.
+
+> 📝 You can now use this Function URL in your Event Streams configuration (e.g., `https://your-service.twil.io/run-intelligence`).
+
 ### Setting up Event Streams
 
 Once your service is deployed (either locally or in the cloud), you need to set up a Webhook to be triggered by an event. We recommend using [Event Streams](https://www.twilio.com/docs/events), as it gives you more control on which events you wish to receiving, while still allowing you to use the Conversations Post-Event Webhooks for other uses.
