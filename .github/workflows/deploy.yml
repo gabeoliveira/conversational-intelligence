@@ -1,0 +1,35 @@
+name: Deploy to Twilio Serverless
+
+on:
+  workflow_dispatch: # Manual trigger from GitHub Actions UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Install Twilio CLI and Serverless Plugin
+        run: |
+          npm install -g twilio-cli
+          twilio plugins:install @twilio-labs/plugin-serverless
+
+      - name: Deploy to Twilio
+        env:
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+          INTELLIGENCE_SERVICE_SID: ${{ secrets.INTELLIGENCE_SERVICE_SID }}
+          CONVERSATION_SERVICE_SID: ${{ secrets.CONVERSATION_SERVICE_SID }}
+        run: |
+          twilio serverless:deploy \
+            --service-name conversational-intelligence \
+            --env INTELLIGENCE_SERVICE_SID=$INTELLIGENCE_SERVICE_SID \
+            --env CONVERSATION_SERVICE_SID=$CONVERSATION_SERVICE_SID \
+            --production
